@@ -26,16 +26,23 @@ package com.mixpanel
 		}
 		
 		private function upgrade(token:String):void {
-			var oldStorage:SharedObject = SharedObject.getLocal("mixpanel");
-			if (!oldStorage.data[token]) { return; }
-			
-			var oldData:Object = oldStorage.data[token];
-			
-			if (oldData["all"]) { register(oldData.all); }
-			if (oldData["events"]) { register(oldData.events); }
-			
-			delete oldStorage.data[token];
-			oldStorage.flush();
+			try
+			{
+				var oldStorage:SharedObject = SharedObject.getLocal("mixpanel");
+				if (!oldStorage.data[token]) { return; }
+
+				var oldData:Object = oldStorage.data[token];
+
+				if (oldData["all"]) { register(oldData.all); }
+				if (oldData["events"]) { register(oldData.events); }
+
+				delete oldStorage.data[token];
+				oldStorage.flush();
+			}
+			catch (e : Error)
+			{
+				return;
+			}
 		}
 		
 		public function has(key:String):Boolean {
