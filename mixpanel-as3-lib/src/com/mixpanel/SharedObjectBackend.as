@@ -20,6 +20,7 @@ package com.mixpanel
 		private function load():IStorageBackend {
 			try {
 				sharedObject = SharedObject.getLocal("mixpanel/" + name, "/");
+				set("SOenable", true);
 			} catch (e:Error) {
 				return null;
 			}
